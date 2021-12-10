@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="hw3_design.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+   crossorigin=""/>
+
+</head>
+
+<body>
+
+
+<div class="container">
+    <h3> <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+width="0" height="0"
+viewBox="0 0 172 172"
+style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#eeeeee"><path d="M143.19336,21.43001c-0.26705,0.00844 -0.53341,0.03181 -0.79785,0.06999h-34.89551c-2.58456,-0.03655 -4.98858,1.32136 -6.29153,3.55376c-1.30295,2.2324 -1.30295,4.99342 0,7.22582c1.30295,2.2324 3.70697,3.59031 6.29153,3.55376h18.53256l-66.59961,66.59961c-1.8722,1.79752 -2.62637,4.46674 -1.97164,6.97823c0.65473,2.51149 2.61604,4.4728 5.12753,5.12753c2.51149,0.65473 5.18071,-0.09944 6.97823,-1.97165l66.59961,-66.59961v18.53255c-0.03655,2.58456 1.32136,4.98858 3.55376,6.29153c2.2324,1.30295 4.99342,1.30295 7.22582,0c2.2324,-1.30295 3.59031,-3.70697 3.55376,-6.29153v-34.9235c0.28889,-2.08845 -0.35639,-4.19816 -1.76411,-5.76769c-1.40772,-1.56953 -3.43507,-2.43964 -5.54253,-2.3788zM35.83333,21.5c-7.83362,0 -14.33333,6.49972 -14.33333,14.33333v100.33333c0,7.83362 6.49972,14.33333 14.33333,14.33333h100.33333c7.83362,0 14.33333,-6.49972 14.33333,-14.33333v-43c0.03655,-2.58456 -1.32136,-4.98858 -3.55376,-6.29153c-2.2324,-1.30295 -4.99342,-1.30295 -7.22582,0c-2.2324,1.30295 -3.59031,3.70697 -3.55376,6.29153v43h-100.33333v-100.33333h43c2.58456,0.03655 4.98858,-1.32136 6.29153,-3.55376c1.30295,-2.2324 1.30295,-4.99342 0,-7.22582c-1.30295,-2.2324 -3.70697,-3.59031 -6.29153,-3.55376z"></path></g></g></svg></a></h3>
+    <h5> <a href="https://manuelpinto.in" target="_blank"></a></h5>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="https://unpkg.com/tabulator-tables@4.0.5/dist/css/tabulator.min.css" rel="stylesheet">
+<script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.0.5/dist/js/tabulator.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/papaparse@5.1.1/papaparse.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+   integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+   crossorigin=""></script>
+
+<style>
+#chartdiv_money {
+  width: 100%;
+  height: 500px;
+}
+</style>
+
+<style>
+#chartdiv_regions_ratings {
+  width: 100%;
+  height: 2000px;
+}
+</style>
+
+<style>
+#chartdiv_cuisines {
+  width: 100%;
+  height: 500px;
+}
+</style>
+<style>
+#chartdiv_average_price {
+  width: 100%;
+  height: 500px;
+}
+</style>
+<style>
+#map_div {
+  width: 100%;
+  height: 500px;
+}
+</style>
+<style>
+#chartdiv_price_region {
+  width: 100%;
+  height: 1000px;
+}
+</style>
+
+<input color="black" class="modern embossed-link" type="file" id="csv-file" name="files"/><br>
+<div id="OneStarExists">One Star file is missing, please upload it</div><br>
+<div id="TwoStarExists">Two Stars file is missing, please upload it</div><br>
+<div id="ThreeStarExists">Three Stars file is missing, please upload it</div>
+<!--<form>
+         <input type="file" id="csv-file" name="files" multiple><br><br>
+         After uploading multiple files, click Submit.<br>
+         <input type="submit" value="Submit">
+</form>-->
+<div id="container"><p> One Star </p></div>
+<div id="oneStar"></div><br>
+<button class="modern embossed-link" type="button" id="download1" onclick="fun_download(table1)">Download csv file.</button><br><br><br>
+<div id="container"><p> Two Stars </p></div>
+<div id="twoStar"></div><br>
+<button class="modern embossed-link" type="button" id="download2" onclick="fun_download(table2)">Download csv file.</button><br><br><br>
+<div id="container"><p> Three Stars </p></div>
+<div id="threeStar"></div><br>
+<button class="modern embossed-link" type="button" id="download3" onclick="fun_download(table3)">Download csv file.</button><br><br><br>
+<div id="container"><p> A pie chart for the prices, displaying the relative part of each price range: </p></div>
+<div id="chartdiv_money"></div><br><br><br>
+<div id="container"><p> A stacked bar chart for the regions, displaying for each rating how many restaurants from each region has this rating: (You need to insert 3 files first)</p>
+<div id="chartdiv_regions_ratings"></div><br><br><br>
+<div id="container"><p> A column chart for the cuisines, displaying the relative part of each cuisine: </p></div>
+<div id="chartdiv_cuisines"></div><br><br><br>
+<div id="container"><p> A column chart for the cuisines, displaying the relative part of each cuisine: </p></div>
+<div id="chartdiv_average_price"></div><br><br><br>
+<div id="container"><p> A bar chart for the average prices depending on regions: </p></div>
+<div id="chartdiv_price_region"></div>
+<div id="map_div"></div>
+    <script>
+	var table1, table2, table3;
+	var mymap;
+	var markersOnMap = [];
+	var selected_region = "";
+	mymap = L.map('map_div').setView([51.505, -0.09], 13);
+	var data_array = [];
+	var data_array1 = [];
+	var data_array2 = [];
+	var data_array3 = [];
+	var file1 = "";
+	var file2 = "";
+	var file3 = "";
+	var one_star_file = "";
+	var two_star_file = "";
+	var three_star_file = "";
+	var regions_one_star;
+	var regions_two_star;
+	var regions_three_star;
+	function handleFileSelect(evt) {
+		var file = evt.target.files[0];
+		if(file.name.includes('one-star-michelin-restaurants')){
+			one_star_file = file;
+		}
+		if(file.name.includes('two-stars-michelin-restaurants')){
+			two_star_file = file;
+		}
+		if(file.name.includes('three-stars-michelin-restaurants')){
+			three_star_file = file;
+		}
+		if(file1 === ""){
+			file1 = file
+		}
+		else{
+			if(file2 === ""){
+			file2 = file
+			}
+			else {
+				if(file3 === ""){
+				file3 = file
+				}
+			}
+		}
+		console.log(file);
+		console.log(file1);
+		console.log(file2);
+		console.log(file3);
+		if(one_star_file != "" && two_star_file != "" && three_star_file != ""){
+			console.log(one_star_file);
+			console.log(two_star_file);
+			console.log(three_star_file);
+		}
+		
+		Papa.parse(file, {
+		header: true,
+		dynamicTyping: true,
+		skipEmptyLines: 'greedy',
+		complete: function(results) {	
+			if(file.name.includes('one-star-michelin-restaurants')){
+				data_array1 = results.data
+			}
+			if(file.name.includes('two-stars-michelin-restaurants')){
+				data_array2 = results.data
+			}
+			if(file.name.includes('three-stars-michelin-restaurants')){
+				data_array3 = results.data
+			}
+			data_array = data_array.concat(results.data);
+			console.log("data of this file is: ");
+			console.log(data_array);
+			//console.log(data_array);
+			
+			
+			data_table = results;
+			
+			//Dynamic table:
+			table1 = new Tabulator("#oneStar", {
+			data:data_array1,        //load row data from array
+			layout:"fitColumns",      //fit columns to width of table
+			responsiveLayout:"hide",  //hide columns that dont fit on the table
+			tooltips:true,            //show tool tips on cells
+			//addRowPos:"top",          //when adding a new row, add it to the top of the table
+			//history:true,             //allow undo and redo actions on the table
+			pagination:"local",       //paginate the data
+			paginationSize:10,        //allow 10 rows per page of data
+			movableColumns:true,      //allow column order to be changed
+			resizableRows:true,       //allow row order to be changed
+			initialSort:[             //set the initial sort order of the data
+				{column:"name", dir:"asc"},
+			],
+			columns:[                 //define the table columns
+				//name,year,latitude,longitude,city,region,zipCode,cuisine,price,url
+				{title:"Name", field:"name", headerFilter:"input"},
+				{title:"Year", field:"year"},
+				{title:"Latitude", field:"latitude"},
+				{title:"Longitude", field:"longitude"},
+				{title:"City", field:"city"},
+				{title:"Region", field:"region"},
+				{title:"Zip code", field:"zipCode"},
+				{title:"Cuisine", field:"cuisine"},
+				{title:"Price", field:"price"},
+				{title:"Url", field:"url"},
+			],
+			});
+			
+			
+			//Dynamic table:
+			table2 = new Tabulator("#twoStar", {
+			data:data_array2,        //load row data from array
+			layout:"fitColumns",      //fit columns to width of table
+			responsiveLayout:"hide",  //hide columns that dont fit on the table
+			tooltips:true,            //show tool tips on cells
+			//addRowPos:"top",          //when adding a new row, add it to the top of the table
+			//history:true,             //allow undo and redo actions on the table
+			pagination:"local",       //paginate the data
+			paginationSize:10,        //allow 10 rows per page of data
+			movableColumns:true,      //allow column order to be changed
+			resizableRows:true,       //allow row order to be changed
+			initialSort:[             //set the initial sort order of the data
+				{column:"name", dir:"asc"},
+			],
+			columns:[                 //define the table columns
+				//name,year,latitude,longitude,city,region,zipCode,cuisine,price,url
+				{title:"Name", field:"name", headerFilter:"input"},
+				{title:"Year", field:"year"},
+				{title:"Latitude", field:"latitude"},
+				{title:"Longitude", field:"longitude"},
+				{title:"City", field:"city"},
+				{title:"Region", field:"region"},
+				{title:"Zip code", field:"zipCode"},
+				{title:"Cuisine", field:"cuisine"},
+				{title:"Price", field:"price"},
+				{title:"Url", field:"url"},
+			],
+			});
+			
+			//Dynamic table:
+			table3 = new Tabulator("#threeStar", {
+			data:data_array3,        //load row data from array
+			layout:"fitColumns",      //fit columns to width of table
+			responsiveLayout:"hide",  //hide columns that dont fit on the table
+			tooltips:true,            //show tool tips on cells
+			//addRowPos:"top",          //when adding a new row, add it to the top of the table
+			//history:true,             //allow undo and redo actions on the table
+			pagination:"local",       //paginate the data
+			paginationSize:10,        //allow 10 rows per page of data
+			movableColumns:true,      //allow column order to be changed
+			resizableRows:true,       //allow row order to be changed
+			initialSort:[             //set the initial sort order of the data
+				{column:"name", dir:"asc"},
+			],
+			columns:[                 //define the table columns
+				//name,year,latitude,longitude,city,region,zipCode,cuisine,price,url
+				{title:"Name", field:"name", headerFilter:"input"},
+				{title:"Year", field:"year"},
+				{title:"Latitude", field:"latitude"},
+				{title:"Longitude", field:"longitude"},
+				{title:"City", field:"city"},
+				{title:"Region", field:"region"},
+				{title:"Zip code", field:"zipCode"},
+				{title:"Cuisine", field:"cuisine"},
+				{title:"Price", field:"price"},
+				{title:"Url", field:"url"},
+			],
+			});
+			
+			//Pie chart for prices:
+			am4core.ready(function() {
+
+				// Themes begin
+				am4core.useTheme(am4themes_animated);
+				// Themes end
+				
+				// Create chart instance
+				var chart = am4core.create("chartdiv_money", am4charts.PieChart);
+				
+				
+				var newArray = data_array.filter(function (el) {
+					return el.price != "N/A"
+					});
+				
+				var prices = [];
+				var check = 0;
+				// Add data
+				for(var i = 0; i < newArray.length; i++) {
+					check = 0;
+					for (var j = 0 ; j < prices.length; j++) {
+						if (prices[j]["price"] == newArray[i].price) {
+							check = 1;
+							prices[j]["count"] = prices[j]["count"] + 1;
+						}
+					}
+					if (check == 0) {
+						var jsonElem = {"price" : newArray[i].price, "count" : 1};
+						prices.push(jsonElem);
+					}
+				}
+				
+				chart.data = prices;
+
+				// Add and configure Series
+				var pieSeries = chart.series.push(new am4charts.PieSeries());
+				pieSeries.dataFields.value = "count";
+				pieSeries.dataFields.category = "price";
+				pieSeries.slices.template.stroke = am4core.color("#fff");
+				pieSeries.slices.template.strokeWidth = 2;
+				pieSeries.slices.template.strokeOpacity = 1;
+				
+				// This creates initial animation
+				pieSeries.hiddenState.properties.opacity = 1;
+				pieSeries.hiddenState.properties.endAngle = -90;
+				pieSeries.hiddenState.properties.startAngle = -90;
+				
+			}); // end am4core.ready()
+				
+				var current_data_array = [];
+				if(file.name.includes('one-star-michelin-restaurants')){
+					current_data_array = data_array1;	
+				}
+				if(file.name.includes('two-stars-michelin-restaurants')){
+					current_data_array = data_array2;	
+				}
+				if(file.name.includes('three-stars-michelin-restaurants')){
+					current_data_array = data_array3;	
+				}
+			
+				
+			// stacked bar chart for regions:
+			am4core.ready(function() {
+
+				// Themes begin
+				am4core.useTheme(am4themes_animated);
+				// Themes end
+				
+				// Create chart instance
+				var chart = am4core.create("chartdiv_regions_ratings", am4charts.XYChart);
+				
+				var regions = [];
+				var check = 0;
+				// Add data
+				for(var i = 0; i < current_data_array.length; i++) {
+					check = 0;
+					for (var j = 0 ; j < regions.length; j++) {
+						if (regions[j][current_data_array[i].region]) {
+							check = 1;
+							regions[j][current_data_array[i].region] = regions[j][current_data_array[i].region] + 1;
+						}
+					}
+					if (check == 0) {
+						var jsonElem; 
+						if(file.name.includes('one-star-michelin-restaurants')) {
+							jsonElem = {"rating" : "1"};
+						}
+						if(file.name.includes('two-stars-michelin-restaurants')) {
+							jsonElem = {"rating" : "2"};
+						}
+						if(file.name.includes('three-stars-michelin-restaurants')) {
+							jsonElem = {"rating" : "3"};
+						}
+						jsonElem[current_data_array[i].region] = 1
+						regions.push(jsonElem);
+					}
+				}
+				console.log(regions);
+				
+				
+				if(file.name.includes('one-star-michelin-restaurants')){
+					regions_one_star = {"rating" : "1 Star"};
+					for (var j = 0 ; j < regions.length; j++) {
+						for(let key in regions[j]){
+							if(key != "rating"){
+								regions_one_star[key] = regions[j][key];
+							}
+						}
+					}
+				}
+				if(file.name.includes('two-stars-michelin-restaurants')){
+					regions_two_star = {"rating" : "2 Star"};
+					for (var j = 0 ; j < regions.length; j++) {
+						for(let key in regions[j]){
+							if(key != "rating"){
+								regions_two_star[key] = regions[j][key];
+							}
+						}
+					}
+				}
+				if(file.name.includes('three-stars-michelin-restaurants')){
+					regions_three_star = {"rating" : "3 Star"};
+					for (var j = 0 ; j < regions.length; j++) {
+						for(let key in regions[j]){
+							if(key != "rating"){
+								regions_three_star[key] = regions[j][key];
+							}
+						}
+					}
+				}
+				
+				console.log(regions_one_star);
+				var regions_star_array;
+				if(one_star_file != "" && two_star_file != "" && three_star_file != ""){
+					regions_star_array = [regions_one_star, regions_two_star, regions_three_star];
+					console.log(regions_star_array)
+				}
+				chart.data = regions_star_array;
+				
+				chart.legend = new am4charts.Legend();
+				chart.legend.position = "right";
+				
+				// Create axes
+				var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+				categoryAxis.dataFields.category = "rating";
+				categoryAxis.renderer.grid.template.opacity = 0;
+				
+				var valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
+				valueAxis.min = 0;
+				valueAxis.renderer.grid.template.opacity = 0;
+				valueAxis.renderer.ticks.template.strokeOpacity = 0.5;
+				valueAxis.renderer.ticks.template.stroke = am4core.color("#495C43");
+				valueAxis.renderer.ticks.template.length = 10;
+				valueAxis.renderer.line.strokeOpacity = 0.5;
+				valueAxis.renderer.baseGrid.disabled = true;
+				valueAxis.renderer.minGridDistance = 40;
+				
+				// Create series
+				function createSeries(field, name) {
+				var series = chart.series.push(new am4charts.ColumnSeries());
+				series.dataFields.valueX = field;
+				series.dataFields.categoryY = "rating";
+				series.stacked = true;
+				series.name = name;
+				
+				var labelBullet = series.bullets.push(new am4charts.LabelBullet());
+				labelBullet.locationX = 0.5;
+				labelBullet.label.text = "{valueX}";
+				labelBullet.label.fill = am4core.color("#fff");
+				}
+				
+				/*createSeries("europe", "Europe");
+				createSeries("namerica", "North America");
+				createSeries("asia", "Asia");
+				createSeries("lamerica", "Latin America");
+				createSeries("meast", "Middle East");
+				createSeries("africa", "Africa");
+				*/
+				for (var j = 0 ; j < regions.length; j++) {
+					for(let key in regions[j]){
+						if(key != "rating"){
+							createSeries(key, key);
+						}
+					}
+				}
+			}); // end am4core.ready()
+			
+			
+			
+			
+			
+			//A column chart for the cuisines:
+			am4core.ready(function() {
+
+				// Themes begin
+				am4core.useTheme(am4themes_animated);
+				// Themes end
+				
+				// Create chart instance
+				var chart = am4core.create("chartdiv_cuisines", am4charts.XYChart3D);
+				
+				cuisines_arr = [];
+				for(var i = 0; i < data_array.length; i++) {
+					check = 0;
+					for (var j = 0 ; j < cuisines_arr.length; j++) {
+						if (cuisines_arr[j]["cuisine"] == data_array[i].cuisine) {
+							check = 1;
+							cuisines_arr[j]["count"] = cuisines_arr[j]["count"] + 1;
+						}
+					}
+					if (check == 0) {
+						var jsonElem = {"cuisine" : data_array[i].cuisine, "count" : 1};
+						cuisines_arr.push(jsonElem);
+					}
+				}
+				
+				// Add data
+				chart.data = cuisines_arr;
+				
+				// Create axes
+				let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+				categoryAxis.dataFields.category = "cuisine";
+				categoryAxis.renderer.labels.template.rotation = 270;
+				categoryAxis.renderer.labels.template.hideOversized = false;
+				categoryAxis.renderer.minGridDistance = 20;
+				categoryAxis.renderer.labels.template.horizontalCenter = "right";
+				categoryAxis.renderer.labels.template.verticalCenter = "middle";
+				categoryAxis.tooltip.label.rotation = 270;
+				categoryAxis.tooltip.label.horizontalCenter = "right";
+				categoryAxis.tooltip.label.verticalCenter = "middle";
+				
+				let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+				valueAxis.title.text = "Cuisines";
+				valueAxis.title.fontWeight = "bold";
+				
+				// Create series
+				var series = chart.series.push(new am4charts.ColumnSeries3D());
+				series.dataFields.valueY = "count";
+				series.dataFields.categoryX = "cuisine";
+				series.name = "count";
+				series.tooltipText = "{categoryX}: [bold]{valueY}[/]";
+				series.columns.template.fillOpacity = .8;
+				
+				var columnTemplate = series.columns.template;
+				columnTemplate.strokeWidth = 2;
+				columnTemplate.strokeOpacity = 1;
+				columnTemplate.stroke = am4core.color("#FFFFFF");
+				
+				columnTemplate.adapter.add("fill", function(fill, target) {
+				return chart.colors.getIndex(target.dataItem.index);
+				})
+				
+				columnTemplate.adapter.add("stroke", function(stroke, target) {
+				return chart.colors.getIndex(target.dataItem.index);
+				})
+				
+				chart.cursor = new am4charts.XYCursor();
+				chart.cursor.lineX.strokeOpacity = 0;
+				chart.cursor.lineY.strokeOpacity = 0;
+				
+			}); // end am4core.ready()
+			
+			
+			
+			//Cuisine and average price
+			am4core.ready(function() {
+
+				// Themes begin
+				am4core.useTheme(am4themes_animated);
+				// Themes end
+				
+				// Create chart instance
+				var chart = am4core.create("chartdiv_average_price", am4charts.XYChart3D);
+				chart.paddingBottom = 30;
+				chart.angle = 35;
+				
+				
+				var check = 0;
+				var cuisines_arr = [];
+				for(var i = 0; i < data_array.length; i++) {
+					check = 0;
+					if (data_array[i]["price"] !== "N/A") {
+						for (var j = 0 ; j < cuisines_arr.length; j++) {
+							if (cuisines_arr[j]["cuisine"] == data_array[i].cuisine) {
+								check = 1;
+								cuisines_arr[j]["count"] = cuisines_arr[j]["count"] + 1;
+								cuisines_arr[j]["sum"] = cuisines_arr[j]["sum"] + data_array[i].price.length;
+							}
+						}
+						if (check == 0) {
+							var jsonElem = {"cuisine" : data_array[i].cuisine, "count" : 1, "sum" : data_array[i].price.length};
+							cuisines_arr.push(jsonElem);
+						}
+					}
+				}
+				for (var j = 0 ; j < cuisines_arr.length; j++) {
+					cuisines_arr[j]["avg"] = (cuisines_arr[j]["sum"]/cuisines_arr[j]["count"]);
+				}
+				// Add data
+				chart.data = cuisines_arr;
+				
+				// Create axes
+				var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+				categoryAxis.dataFields.category = "cuisine";
+				categoryAxis.renderer.grid.template.location = 0;
+				categoryAxis.renderer.minGridDistance = 20;
+				categoryAxis.renderer.inside = true;
+				categoryAxis.renderer.grid.template.disabled = true;
+				
+				let labelTemplate = categoryAxis.renderer.labels.template;
+				labelTemplate.rotation = -90;
+				labelTemplate.horizontalCenter = "left";
+				labelTemplate.verticalCenter = "middle";
+				labelTemplate.dy = 10; // moves it a bit down;
+				labelTemplate.inside = false; // this is done to avoid settings which are not suitable when label is rotated
+				
+				var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+				valueAxis.renderer.grid.template.disabled = true;
+				
+				// Create series
+				var series = chart.series.push(new am4charts.ConeSeries());
+				series.dataFields.valueY = "avg";
+				series.dataFields.categoryX = "cuisine";
+				
+				var columnTemplate = series.columns.template;
+				columnTemplate.adapter.add("fill", function(fill, target) {
+				return chart.colors.getIndex(target.dataItem.index);
+				})
+				
+				columnTemplate.adapter.add("stroke", function(stroke, target) {
+				return chart.colors.getIndex(target.dataItem.index);
+				})
+				
+			}); // end am4core.ready()
+			
+			
+			
+			//average price depending on region
+			am4core.ready(function() {
+
+				// Themes begin
+				am4core.useTheme(am4themes_animated);
+				// Themes end
+
+				// Create chart instance
+				var chart = am4core.create("chartdiv_price_region", am4charts.XYChart3D);
+
+
+				var check = 0;
+				var cuisines_arr = [];
+				for(var i = 0; i < data_array.length; i++) {
+					check = 0;
+					if (data_array[i]["price"] !== "N/A") {
+						for (var j = 0 ; j < cuisines_arr.length; j++) {
+							if (cuisines_arr[j]["region"] == data_array[i].region) {
+								check = 1;
+								cuisines_arr[j]["count"] = cuisines_arr[j]["count"] + 1;
+								cuisines_arr[j]["sum"] = cuisines_arr[j]["sum"] + data_array[i].price.length;
+							}
+						}
+						if (check == 0) {
+							var jsonElem = {"region" : data_array[i].region, "count" : 1, "sum" : data_array[i].price.length};
+							cuisines_arr.push(jsonElem);
+						}
+					}
+				}
+				for (var j = 0 ; j < cuisines_arr.length; j++) {
+					cuisines_arr[j]["avg"] = (cuisines_arr[j]["sum"]/cuisines_arr[j]["count"]);
+				}
+				// Add data
+				chart.data = cuisines_arr;
+
+				// Create axes
+				var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+				categoryAxis.dataFields.category = "region";
+				categoryAxis.numberFormatter.numberFormat = "#";
+				categoryAxis.renderer.inversed = true;
+
+				var  valueAxis = chart.xAxes.push(new am4charts.ValueAxis()); 
+
+				// Create series
+				var series = chart.series.push(new am4charts.ColumnSeries3D());
+				series.dataFields.valueX = "avg";
+				series.dataFields.categoryY = "region";
+				series.name = "Average Income";
+				series.columns.template.propertyFields.fill = "color";
+				series.columns.template.tooltipText = "{valueX}";
+				series.columns.template.column3D.stroke = am4core.color("#fff");
+				series.columns.template.column3D.strokeOpacity = 0.2;
+
+			}); // end am4core.ready()
+			
+			
+			
+			//Map:
+			//TODO: maybe set background picture in CSS
+			
+			
+			L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYmFkZXJ6byIsImEiOiJjazRnOGh1Z2QwcnE1M3FuNmtkN3pubWc4In0.NXeRq-vH2qB73Zr0NJegNQ', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    accessToken: 'your.mapbox.access.token'
+}).addTo(mymap);
+				
+				if(selected_region == ""){
+					for(var i = 0; i < data_array.length; i++) {
+						var marker = L.marker([data_array[i]["latitude"], data_array[i]["longitude"]]);
+						marker.addTo(mymap);
+						markersOnMap.push(marker);
+					
+					}
+				}
+
+				if(file.name.includes('one-star-michelin-restaurants')){
+					document.getElementById("OneStarExists").textContent = "One Star file uploaded successfully!!";
+					document.getElementById("OneStarExists").style.color = "#6bed01";
+				}
+				if(file.name.includes('two-stars-michelin-restaurants')){
+					document.getElementById("TwoStarExists").textContent = "Two Stars file uploaded successfully!!";
+					document.getElementById("TwoStarExists").style.color = "#6bed01";
+				}
+				if(file.name.includes('three-stars-michelin-restaurants')){
+					document.getElementById("ThreeStarExists").textContent = "Three Stars file uploaded successfully!!";
+					document.getElementById("ThreeStarExists").style.color = "#6bed01";
+				}
+				
+			}
+		});
+	}
+ 
+	$(document).ready(function(){
+		$("#csv-file").change(handleFileSelect);
+		
+	});
+	//TODO: Solve it!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	function fun_download(table) {
+		table.download("csv", "data.csv"); //download table data as a CSV formatted file with a file name of data.csv
+	};
+	
+	
+		function mapFunction() {
+    var x = document.getElementById("mySelect").value;
+	
+
+	//delete all current markers on map and initiate the markersArray once again
+	for(var k = 0; k < markersOnMap.length; k++){
+		markersOnMap[k].removeFrom(mymap);
+	}
+	for(var k = 0; k < markersOnMap.length; k++){
+		markersOnMap.pop();
+	}
+	
+					L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYmFkZXJ6byIsImEiOiJjazRnOGh1Z2QwcnE1M3FuNmtkN3pubWc4In0.NXeRq-vH2qB73Zr0NJegNQ', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    accessToken: 'your.mapbox.access.token'
+}).addTo(mymap);
+				var chosen_data_array = [];
+				chosen_data_array = data_array;
+				if(x == "DisplayAll"){
+					chosen_data_array = data_array;
+				}
+				if(x == "HideAll"){
+					chosen_data_array = [];
+				}
+				if(x == "1Star"){
+					chosen_data_array = data_array1;
+				}
+				if(x == "2Star"){
+					chosen_data_array = data_array2;
+				}
+				if(x == "3Star"){
+					chosen_data_array = data_array3;
+				}
+				if(selected_region == ""){
+					for(var i = 0; i < chosen_data_array.length; i++) {
+						var marker = L.marker([chosen_data_array[i]["latitude"], chosen_data_array[i]["longitude"]]);
+						marker.addTo(mymap);
+						markersOnMap.push(marker);
+					
+					}
+				}
+				else {
+						for(var i = 0; i < chosen_data_array.length; i++) {
+						if(chosen_data_array[i]["region"] == selected_region) {
+							var marker = L.marker([chosen_data_array[i]["latitude"], chosen_data_array[i]["longitude"]]);
+							marker.addTo(mymap);
+							markersOnMap.push(marker);
+						}
+					
+					
+					}
+				}
+				
+				
+				
+}
+
+
+function getRegion() {
+
+	selected_region = document.getElementById("mapRegion").value;
+	//trigger map update
+	mapFunction();	
+
+}
+	
+    </script>
+	
+	
+
+<select id="mySelect" onchange="mapFunction()">
+  <option value="DisplayAll">Display-All
+  <option value="HideAll">Hide-All
+  <option value="1Star">1-Star
+  <option value="2Star">2-Star
+  <option value="3Star">3-Star
+</select>
+
+<input type="text" id="mapRegion" />
+<button class="modern" onclick="getRegion()">Apply region</button>
+
+	
+</body>
+</html>
+

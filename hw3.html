@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HW3</title>
+    <link rel="stylesheet" href="hw3_design.css">
+
+</head>
+<body>
+    <input type="file" class="auxbutton" id="uploadcsv" accept=".csv">
+    <script src="./PapaParse-5.0.2/papaparse.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin=""/>
+    
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+    <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
+
+    <!-- Navbar Section -->
+    <div id="navbar">
+        <div id="navbar_container">
+            <p id="hw3"><a href="#">HW3</a></p>
+            <nav>
+            <ul id="navbar_items">
+                <li><a id="upload" onclick="uploadcsv()" href="#">Upload csv file</a></li>
+                <li><a id="read" onclick="readcsv()" href="#" hidden>Read csv file</a></li>
+                <li><a id="download" onclick="downloadcsv()" href="#" hidden>Download csv file</a></li>
+                <li><a id="reset" onclick="reset()" href="#" hidden> Reset</a></li>
+            </ul>
+            </nav>
+
+        </div>
+    </div>
+    
+    
+
+    <!-- hero Section -->
+    <section class="hero">
+        <div id="hero_container">
+            <h1 id="dbheader">Database is Missing, Please upload it</h1>
+            <div id="airbnbtable"> </div>
+            <div id="info">
+                <p>Additional Info:</p>
+                <ul id ="airbnbinfo"> 
+                    <li id="name">Name: </li>
+                    <li id="id">ID: </li>
+                    <li id="host_name">Host Name: </li>
+                    <li id="neighbourhood_group">Borough: </li>
+                    <li id="neighbourhood">Neighborhood: </li>
+                    <li id="room_type">Room Type: </li>
+                    <li id="price">Price: </li>
+                    <li id="minimum_nights">Minimum Nights: </li>
+                    <li id="number_of_reviews">Number Of Reviews: </li>
+                    <li id="reviews_per_month">Reviews Per Month: </li>
+                    <li id="last_review">Last Review: </li>
+                    <li id="calculated_host_listings_count">Calculated Host Listings Count: </li>
+                    <li id="availability_365">Availability 365: </li>
+                </ul>
+
+            </div>
+        </div>
+
+    </section>
+
+    <section class="map"> 
+        <div id="map_container">
+            <div id="map"></div> <br>
+        </div>
+    </section>
+
+
+</body>
+</html>
+
+<script>
+var dataArray;
+    var table;
+    var nyMap;
+    var markers = [];
+
+    var setupMap = function() {
+        nyMap = L.map('map').setView(L.latLng(40.754932, -73.984016), 11);
+        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibW1haG1vdWQyNCIsImEiOiJja3gwbDBtODMwM3dsMndwaGZ0cHk1NDZnIn0.zqugofdRSRjvP9K319h_NA', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        maxZoom: 18,
+        id: 'mapbox/streets-v11',
+        tileSize: 512,
+        zoomOffset: -1,
+        accessToken: 'your.mapbox.access.token'}).addTo(nyMap);
+
+    };
+
+    setupMap();
+    var layerGroup = L.layerGroup().addTo(nyMap);
+
+    function uploadcsv()
+    {
+        document.getElementById("hw3").innerHTML = "<b>HW3</b>";
+
+        document.getElementById('uploadcsv').click();
+        var iterator;
+
+        iterator = document.getElementById("read");
+        iterator.style.display = "flex";
+
+        document.getElementById('read').addEventListener('click', ()=>
+        {
+            Papa.parse(document.getElementById('uploadcsv').files[0], {
+                download: true,
+                header: true,
+		        dynamicTyping: true,
+		        skipEmptyLines: 'greedy',
+                complete: function(result) 
+                { 
+                    dataArray = result.data;
+                    
+                    table = new Tabulator("#airbnbtable", {
+                            data:dataArray,           //load row data from array
+                            selectable:1,
+                            resizableRows:false,
+                            layout:"fitColumns",      //fit columns to width of table
+                            responsiveLayout:"hide",  //hide columns that dont fit on the table
+                            pagination:"local",       //paginate the data
+                            paginationSize:10,         //allow 7 rows per page of data
+                            movableColumns:true,      //allow column order to be changed
+                            
+                            resizableRows:false,       //allow row order to be changed
+                            initialSort:[             //set the initial sort order of the data
+                                {column:"name", dir:"asc"},
+                            ],
+                            columns:[                 //define the table columns
+                                {title:"Name", field:"name", headerFilter:"input"},
+                                {title:"Host ID", field:"host_id", headerFilter:"input"},
+                                {title:"ID", field:"id", headerFilter:"input"},
+                                {title:"Neighborhood", field:"neighbourhood", headerFilter:"input"},
+                                {title:"Room Type", field:"room_type", headerFilter:"input"},
+                                {title:"Price", field:"price", headerFilter:"input"},                            ],
+
+                });
+
+                table.on("rowSelected", function(row){
+                    let rowData = row["_row"]["data"];
+                    let latitude = rowData["latitude"];
+                    let longitude = rowData["longitude"];
+                    console.log(rowData);
+                    UpdateAdditionalInfo(rowData);
+                    nyMap.flyTo(L.latLng(latitude, longitude), 16);
+                    iterator = document.getElementById("info");
+                    iterator.style.display = "grid";
+                });
+
+                table.on("rowDeselected", function(row){
+                    //nyMap.flyTo(L.latLng(40.754932, -73.984016), 11);
+                    iterator = document.getElementById("info");
+                    iterator.style.display = "none";
+                });
+                
+                nyMap.on("click", function(x){
+                    table.deselectRow();
+                    iterator = document.getElementById("info");
+                    iterator.style.display = "none";
+                });
+                nyMap.on("dragstart", function(x){
+                    table.deselectRow();
+                    iterator = document.getElementById("info");
+                    iterator.style.display = "none";
+                });
+
+                AddMarkers();
+
+                }
+            })
+
+        });
+    }
+
+    function UpdateAdditionalInfo(rowdata)
+    {
+        var update = function(id, receivedData) 
+        {
+            let value = receivedData[id];
+            var currentValue = document.getElementById(id).innerHTML;
+            if(currentValue.substring(0,3) != "<b>")
+            {
+                currentValue = "<b>" + currentValue;
+            }
+            console.log(currentValue);
+            var colonIndex = currentValue.indexOf(":");
+            var lastindex = Math.min(currentValue.length, colonIndex + 2)
+
+            document.getElementById(id).innerHTML = currentValue.substring(0, lastindex) + "</b>" + value;
+        } ;
+        console.log(rowdata);
+        update("id", rowdata);
+        update("name", rowdata);
+        update("host_name", rowdata);
+        update("neighbourhood_group", rowdata);
+        update("neighbourhood", rowdata);
+        update("room_type", rowdata);
+        update("minimum_nights", rowdata);
+        update("price", rowdata);
+        update("number_of_reviews", rowdata);
+        update("reviews_per_month", rowdata);
+        update("availability_365", rowdata);
+        update("calculated_host_listings_count", rowdata);
+        update("last_review", rowdata);
+
+    }
+
+    function downloadcsv()
+    {
+        var csvdata = Papa.unparse(dataArray);
+        var blob = new Blob([csvdata], {type: 'text/csv'});
+        var url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.setAttribute('hidden', '');
+        a.setAttribute('href', url);
+        a.setAttribute('download', 'data.csv');
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild;
+    }
+
+
+    function readcsv()
+    {
+        iterator = document.getElementById("upload");
+        iterator.style.display = "none";
+
+        iterator = document.getElementById("reset");
+        iterator.style.display = "flex";
+
+        iterator = document.getElementById("download");
+        iterator.style.display = "flex";
+
+        iterator = document.getElementById("airbnbtable");
+        iterator.style.display = "contents";
+
+        var filename = document.getElementById('uploadcsv').files[0].name;
+
+        if(!document.getElementById("hw3").innerHTML.includes('-'))
+        {
+            document.getElementById("hw3").innerHTML += ' - ' + filename;
+        }
+        document.getElementById("dbheader").innerHTML = "Subset of NY airbnb's";
+
+    }   
+
+
+    function reset()
+    {
+
+        var iterator;
+
+        iterator = document.getElementById("upload");
+        iterator.style.display = "flex";
+
+        iterator = document.getElementById("read");
+        iterator.style.display = "none";
+
+        iterator = document.getElementById("reset");
+        iterator.style.display = "none";
+
+        iterator = document.getElementById("info");
+        iterator.style.display = "none";
+
+        iterator = document.getElementById("download");
+        iterator.style.display = "none";
+
+        document.getElementById("hw3").innerHTML = "<b>HW3</b>";
+        document.getElementById("dbheader").innerHTML = "Database is Missing, Please upload it";
+        document.getElementById("hw3").innerHTML = "<b>HW3</b>";
+        var hider = document.getElementById("airbnbtable").innerHTML = "<b>HW3</b>";
+        hider.display = "none";
+
+        layerGroup.clearLayers();
+        }
+    
+    function AddMarkers()
+    {
+        for(var i = 0; i < dataArray.length; i++)
+        {
+		    var coordinations = L.latLng(dataArray[i]["latitude"], dataArray[i]["longitude"]);
+            L.marker(coordinations).addTo(layerGroup);
+
+            marker = {id:dataArray[i]["id"], "latitude": dataArray[i]["latitude"],
+            "longitude":dataArray[i]["longitude"]}
+            markers.push(marker);
+		}
+
+    }
+
+
+</script>
