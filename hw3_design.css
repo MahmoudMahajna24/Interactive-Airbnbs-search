@@ -69,7 +69,8 @@ ul{
 }
 
 #map { 
-    height: 260px; 
+    visibility: hidden;
+    height: 300px;
 }
 
 #info p{
@@ -80,10 +81,9 @@ ul{
 }
 
 #info{
+    background: #c1c1c1;
     display: none;
-    grid-template-columns: auto;
-    height: 90px;
+    height: 110px;
     padding: 0;
     margin: 0;
 }
-

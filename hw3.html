@@ -81,9 +81,11 @@ var dataArray;
     var table;
     var nyMap;
     var markers = [];
+    nyMap = L.map('map').setView(L.latLng(40.754932, -73.984016), 11);
+    layerGroup = L.layerGroup().addTo(nyMap);
+
 
     var setupMap = function() {
-        nyMap = L.map('map').setView(L.latLng(40.754932, -73.984016), 11);
         L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibW1haG1vdWQyNCIsImEiOiJja3gwbDBtODMwM3dsMndwaGZ0cHk1NDZnIn0.zqugofdRSRjvP9K319h_NA', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         maxZoom: 18,
@@ -93,9 +95,7 @@ var dataArray;
         accessToken: 'your.mapbox.access.token'}).addTo(nyMap);
 
     };
-
     setupMap();
-    var layerGroup = L.layerGroup().addTo(nyMap);
 
     function uploadcsv()
     {
@@ -143,6 +143,7 @@ var dataArray;
                 });
 
                 table.on("rowSelected", function(row){
+                    //todo: tidy up additional info
                     let rowData = row["_row"]["data"];
                     let latitude = rowData["latitude"];
                     let longitude = rowData["longitude"];
@@ -151,6 +152,8 @@ var dataArray;
                     nyMap.flyTo(L.latLng(latitude, longitude), 16);
                     iterator = document.getElementById("info");
                     iterator.style.display = "grid";
+                    iterator.style.gridColumnGap = "500px";
+                    iterator.style.gridTemplateColumns = "auto";
                 });
 
                 table.on("rowDeselected", function(row){
@@ -169,7 +172,9 @@ var dataArray;
                     iterator = document.getElementById("info");
                     iterator.style.display = "none";
                 });
-
+                nyMap.flyTo(L.latLng(40.754932, -73.984016), 11);
+                iterator = document.getElementById("map");
+                iterator.style.visibility = "visible";
                 AddMarkers();
 
                 }
@@ -270,6 +275,9 @@ var dataArray;
 
         iterator = document.getElementById("download");
         iterator.style.display = "none";
+
+        iterator = document.getElementById("map");
+        iterator.style.visibility = "hidden";
 
         document.getElementById("hw3").innerHTML = "<b>HW3</b>";
         document.getElementById("dbheader").innerHTML = "Database is Missing, Please upload it";
