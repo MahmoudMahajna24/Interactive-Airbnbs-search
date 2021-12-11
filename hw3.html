@@ -23,7 +23,7 @@
     <!-- Navbar Section -->
     <div id="navbar">
         <div id="navbar_container">
-            <p id="hw3"><a href="#">HW3</a></p>
+            <p id="hw3"><a onclick="reset()" href="#">HW3</a></p>
             <nav>
             <ul id="navbar_items">
                 <li><a id="upload" onclick="uploadcsv()" href="#">Upload csv file</a></li>
@@ -172,6 +172,10 @@ var dataArray;
                     iterator = document.getElementById("info");
                     iterator.style.display = "none";
                 });
+                iterator = document.getElementById("airbnbtable");
+                iterator.style.visibility = "visible";
+
+
                 nyMap.flyTo(L.latLng(40.754932, -73.984016), 11);
                 iterator = document.getElementById("map");
                 iterator.style.visibility = "visible";
@@ -236,6 +240,9 @@ var dataArray;
         iterator = document.getElementById("upload");
         iterator.style.display = "none";
 
+        iterator = document.getElementById("read");
+        iterator.style.display = "none";
+
         iterator = document.getElementById("reset");
         iterator.style.display = "flex";
 
@@ -277,6 +284,9 @@ var dataArray;
         iterator.style.display = "none";
 
         iterator = document.getElementById("map");
+        iterator.style.visibility = "hidden";
+
+        iterator = document.getElementById("airbnbtable");
         iterator.style.visibility = "hidden";
 
         document.getElementById("hw3").innerHTML = "<b>HW3</b>";
