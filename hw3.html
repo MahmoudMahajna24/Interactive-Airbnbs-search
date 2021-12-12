@@ -23,10 +23,10 @@
             <p id="hw3"><a onclick="reset()" href="#">HW3</a></p>
             <nav>
                 <ul id="navbar_items">
-                    <li><a id="upload" onclick="uploadcsv()" href="#">Upload csv file</a></li>
-                    <li><a id="read" onclick="readcsv()" href="#" hidden>Read csv file</a></li>
-                    <li><a id="download" onclick="downloadcsv()" href="#" hidden>Download csv file</a></li>
-                    <li><a id="reset" onclick="reset()" href="#" hidden> Reset</a></li>
+                    <li><a id="upload" class="button_border" onclick="uploadcsv()" href="#">Upload csv file</a></li>
+                    <li><a id="read" class="button_border" onclick="readcsv()" href="#" hidden>Read csv file</a></li>
+                    <li><a id="download" class="button_border" onclick="downloadcsv()" href="#" hidden>Download csv file</a></li>
+                    <li><a id="reset" class="button_border" onclick="reset()" href="#" hidden> Reset</a></li>
                 </ul>
             </nav>
 
@@ -95,8 +95,9 @@
         document.getElementById('uploadcsv').click();
         var iterator;
 
+        document.getElementById("upload").style.display = "inline";
         iterator = document.getElementById("read");
-        iterator.style.display = "flex";
+        iterator.style.display = "inline";
 
         document.getElementById('read').addEventListener('click', () => {
             Papa.parse(document.getElementById('uploadcsv').files[0], {
@@ -249,10 +250,10 @@
         iterator.style.display = "none";
 
         iterator = document.getElementById("reset");
-        iterator.style.display = "flex";
+        iterator.style.display = "inline";
 
         iterator = document.getElementById("download");
-        iterator.style.display = "flex";
+        iterator.style.display = "inline";
 
         iterator = document.getElementById("airbnbtable");
         iterator.style.display = "contents";
@@ -269,7 +270,7 @@
         var iterator;
 
         iterator = document.getElementById("upload");
-        iterator.style.display = "flex";
+        iterator.style.display = "inline";
 
         iterator = document.getElementById("read");
         iterator.style.display = "none";
