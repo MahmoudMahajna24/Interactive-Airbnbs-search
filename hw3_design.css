@@ -49,6 +49,10 @@ ul {
     padding: 0;
 }
 
+li {
+    margin: 4px;
+}
+
 #navbar_items a {
     text-decoration: none;
     color: black;
