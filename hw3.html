@@ -73,7 +73,6 @@
     var dataArray;
     var table;
     var nyMap;
-    var markers = [];
     nyMap = L.map('map').setView(L.latLng(40.754932, -73.984016), 11);
     layerGroup = L.layerGroup().addTo(nyMap);
 
@@ -154,9 +153,12 @@
                         let rowData = row["_row"]["data"];
                         let latitude = rowData["latitude"];
                         let longitude = rowData["longitude"];
-                        console.log(rowData);
+                        if(latitude !== null && longitude !== longt)
+                        {
+                            
+                            nyMap.flyTo(L.latLng(latitude, longitude), 16);
+                        }
                         UpdateAdditionalInfo(rowData);
-                        nyMap.flyTo(L.latLng(latitude, longitude), 16);
                         iterator = document.getElementById("info");
                         iterator.style.display = "grid";
                         iterator.style.gridColumnGap = "500px";
@@ -165,12 +167,6 @@
 
                     table.on("rowDeselected", function(row) {
                         //nyMap.flyTo(L.latLng(40.754932, -73.984016), 11);
-                        iterator = document.getElementById("info");
-                        iterator.style.display = "none";
-                    });
-
-                    nyMap.on("click", function(x) {
-                        table.deselectRow();
                         iterator = document.getElementById("info");
                         iterator.style.display = "none";
                     });
@@ -296,15 +292,17 @@
 
     function AddMarkers() {
         for (var i = 0; i < dataArray.length; i++) {
-            var coordinations = L.latLng(dataArray[i]["latitude"], dataArray[i]["longitude"]);
-            L.marker(coordinations).addTo(layerGroup);
 
-            marker = {
-                id: dataArray[i]["id"],
-                "latitude": dataArray[i]["latitude"],
-                "longitude": dataArray[i]["longitude"]
+            let lat = dataArray[i]["latitude"];
+            let longt = dataArray[i]["longitude"];
+            if(lat !== null && longt !== longt)
+            {
+                if (lat > 90 || lat < -90 || longt < -180 || longt > 80)
+                {
+                    var coordinations = L.latLng(lat, longt);
+                    L.marker(coordinations).addTo(layerGroup);
+                }
             }
-            markers.push(marker);
         }
     }
 </script>
