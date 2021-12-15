@@ -153,7 +153,7 @@
                         let rowData = row["_row"]["data"];
                         let latitude = rowData["latitude"];
                         let longitude = rowData["longitude"];
-                        if(latitude !== null && longitude !== longt)
+                        if(latitude !== null && longitude !== null)
                         {
                             
                             nyMap.flyTo(L.latLng(latitude, longitude), 16);
@@ -295,9 +295,9 @@
 
             let lat = dataArray[i]["latitude"];
             let longt = dataArray[i]["longitude"];
-            if(lat !== null && longt !== longt)
+            if(lat !== null && longt !== null)
             {
-                if (lat > 90 || lat < -90 || longt < -180 || longt > 80)
+                if (-90 <= lat <= 90 && -180 <= longt <= 80)
                 {
                     var coordinations = L.latLng(lat, longt);
                     L.marker(coordinations).addTo(layerGroup);
