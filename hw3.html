@@ -11,21 +11,26 @@
 <body>
     <input type="file" class="auxbutton" id="uploadcsv" accept=".csv">
     <script src="./PapaParse-5.0.2/papaparse.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
 
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
     <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
 
     <!-- Navbar Section -->
     <div id="navbar">
-        <div id="navbar_container">
+        <div class="navbar_container">
             <p id="hw3"><a onclick="reset()" href="#">HW3</a></p>
             <nav>
                 <ul id="navbar_items">
                     <li><a id="upload" class="button_border" onclick="uploadcsv()" href="#">Upload csv file</a></li>
                     <li><a id="read" class="button_border" onclick="readcsv()" href="#" hidden>Read csv file</a></li>
-                    <li><a id="download" class="button_border" onclick="downloadcsv()" href="#" hidden>Download csv file</a></li>
+                    <li><a id="download" class="button_border" onclick="downloadcsv()" href="#" hidden>Download csv
+                            file</a></li>
                     <li><a id="reset" class="button_border" onclick="reset()" href="#" hidden> Reset</a></li>
                 </ul>
             </nav>
@@ -33,31 +38,62 @@
         </div>
     </div>
 
-    <!-- hero Section -->
-    <section class="hero">
-        <div id="hero_container">
-            <h1 id="dbheader">Database is Missing, Please upload it</h1>
-            <div id="airbnbtable"> </div>
-            <div id="info">
-                <p>Additional Info:</p>
-                <ul id="airbnbinfo">
-                    <li id="name">Name: </li>
-                    <li id="id">ID: </li>
-                    <li id="host_name">Host Name: </li>
-                    <li id="neighbourhood_group">Borough: </li>
-                    <li id="neighbourhood">Neighborhood: </li>
-                    <li id="room_type">Room Type: </li>
-                    <li id="price">Price: </li>
-                    <li id="minimum_nights">Minimum Nights: </li>
-                    <li id="number_of_reviews">Number Of Reviews: </li>
-                    <li id="reviews_per_month">Reviews Per Month: </li>
-                    <li id="last_review">Last Review: </li>
-                    <li id="calculated_host_listings_count">Calculated Host Listings Count: </li>
-                    <li id="availability_365">Availability 365: </li>
-                </ul>
+    <!-- dbHeadr -->
+    <div class="dbheader">
+        <h1 id="dbheader">Database is Missing, Please upload it</h1>
+    </div>
+
+    <!-- buttons container -->
+    <div id="button_container" class="button_container">
+        <div class="upload_container">
+            <div class="upload-area">
+                <div>
+                    <img
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Noun_Project_cloud_upload_icon_411593_cc.svg/1130px-Noun_Project_cloud_upload_icon_411593_cc.svg.png" />
+                </div>
+                <header>Upload CSV file</header>
+                <button onclick="uploadcsv()" href="#">Browse File</button>
             </div>
         </div>
-    </section>
+
+        <div class="read_container">
+            <div class="read-area">
+                <div>
+                    <img
+                        src="https://cdn0.iconfinder.com/data/icons/files-documents-outline/512/oYPS__file_document_enlarge_magnifier_magnify_examine_read_paper_page_text-512.png" />
+                </div>
+                <header>Read CSV file</header>
+                <button id="read_button" onclick="readcsv()" href="#">Read File</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- hero Section -->
+    <div class="hero_container">
+        <div id="airbnbtable"> </div>
+        <div class="info" id="info">
+            <p>Additional Info:</p>
+            <ul id="airbnbinfo">
+                <li id="name">Name: </li>
+                <li id="id">ID: </li>
+                <li id="host_name">Host Name: </li>
+                <li id="neighbourhood_group">Borough: </li>
+                <li id="neighbourhood">Neighborhood: </li>
+                <li id="room_type">Room Type: </li>
+                <li id="price">Price: </li>
+                <li id="minimum_nights">Minimum Nights: </li>
+                <li id="number_of_reviews">Number Of Reviews: </li>
+                <li id="reviews_per_month">Reviews Per Month: </li>
+                <li id="last_review">Last Review: </li>
+                <li id="calculated_host_listings_count">Calculated Host Listings Count: </li>
+                <li id="availability_365">Availability 365: </li>
+            </ul>
+        </div>
+    </div>
+
+
 
     <section class="map">
         <div id="map_container">
@@ -76,17 +112,22 @@
     nyMap = L.map('map').setView(L.latLng(40.754932, -73.984016), 11);
     layerGroup = L.layerGroup().addTo(nyMap);
 
-    var setupMap = function() {
-        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibW1haG1vdWQyNCIsImEiOiJja3gwbDBtODMwM3dsMndwaGZ0cHk1NDZnIn0.zqugofdRSRjvP9K319h_NA', {
-            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-            maxZoom: 18,
-            id: 'mapbox/streets-v11',
-            tileSize: 512,
-            zoomOffset: -1,
-            accessToken: 'your.mapbox.access.token'
-        }).addTo(nyMap);
+    var setupMap = function () {
+        L.tileLayer(
+            'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibW1haG1vdWQyNCIsImEiOiJja3gwbDBtODMwM3dsMndwaGZ0cHk1NDZnIn0.zqugofdRSRjvP9K319h_NA', {
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                maxZoom: 18,
+                id: 'mapbox/streets-v11',
+                tileSize: 512,
+                zoomOffset: -1,
+                accessToken: 'your.mapbox.access.token'
+            }).addTo(nyMap);
     };
     setupMap();
+
+    var read_button = document.getElementById("read_button");
+    read_button.disabled = true;
+    read_button.style.cursor = "not-allowed";
 
     function uploadcsv() {
         document.getElementById("hw3").innerHTML = "<b>HW3</b>";
@@ -97,14 +138,17 @@
         document.getElementById("upload").style.display = "inline";
         iterator = document.getElementById("read");
         iterator.style.display = "inline";
+        var read_button = document.getElementById("read_button");
+        read_button.disabled = false;
+        read_button.style.cursor = "pointer";
 
-        document.getElementById('read').addEventListener('click', () => {
+        document.getElementById('read_button').addEventListener('click', () => {
             Papa.parse(document.getElementById('uploadcsv').files[0], {
                 download: true,
                 header: true,
                 dynamicTyping: true,
                 skipEmptyLines: 'greedy',
-                complete: function(result) {
+                complete: function (result) {
                     dataArray = result.data;
 
                     table = new Tabulator("#airbnbtable", {
@@ -148,14 +192,13 @@
                         ],
                     });
 
-                    table.on("rowSelected", function(row) {
+                    table.on("rowSelected", function (row) {
                         //todo: tidy up additional info
                         let rowData = row["_row"]["data"];
                         let latitude = rowData["latitude"];
                         let longitude = rowData["longitude"];
-                        if(latitude !== null && longitude !== null)
-                        {
-                            
+                        if (latitude !== null && longitude !== null) {
+
                             nyMap.flyTo(L.latLng(latitude, longitude), 16);
                         }
                         UpdateAdditionalInfo(rowData);
@@ -165,13 +208,13 @@
                         iterator.style.gridTemplateColumns = "auto";
                     });
 
-                    table.on("rowDeselected", function(row) {
+                    table.on("rowDeselected", function (row) {
                         //nyMap.flyTo(L.latLng(40.754932, -73.984016), 11);
                         iterator = document.getElementById("info");
                         iterator.style.display = "none";
                     });
 
-                    nyMap.on("dragstart", function(x) {
+                    nyMap.on("dragstart", function (x) {
                         table.deselectRow();
                         iterator = document.getElementById("info");
                         iterator.style.display = "none";
@@ -190,7 +233,7 @@
     }
 
     function UpdateAdditionalInfo(rowdata) {
-        var update = function(id, receivedData) {
+        var update = function (id, receivedData) {
             let value = receivedData[id];
             var currentValue = document.getElementById(id).innerHTML;
             if (currentValue.substring(0, 3) != "<b>") {
@@ -234,11 +277,17 @@
     }
 
     function readcsv() {
+        document.getElementById("button_container").style.display = "none";
+
+        var iterator;
         iterator = document.getElementById("upload");
         iterator.style.display = "none";
 
         iterator = document.getElementById("read");
         iterator.style.display = "none";
+        var read_button = document.getElementById("read_button");
+        read_button.disabled = true;
+        read_button.style.cursor = "not-allowed";
 
         iterator = document.getElementById("reset");
         iterator.style.display = "inline";
@@ -259,12 +308,16 @@
 
     function reset() {
         var iterator;
+        document.getElementById("button_container").style.display = "flex";
 
         iterator = document.getElementById("upload");
         iterator.style.display = "inline";
 
         iterator = document.getElementById("read");
         iterator.style.display = "none";
+        var read_button = document.getElementById("read_button");
+        read_button.disabled = true;
+        read_button.style.cursor = "not-allowed";
 
         iterator = document.getElementById("reset");
         iterator.style.display = "none";
@@ -295,10 +348,8 @@
 
             let lat = dataArray[i]["latitude"];
             let longt = dataArray[i]["longitude"];
-            if(lat !== null && longt !== null)
-            {
-                if (-90 <= lat <= 90 && -180 <= longt <= 80)
-                {
+            if (lat !== null && longt !== null) {
+                if (-90 <= lat <= 90 && -180 <= longt <= 80) {
                     var coordinations = L.latLng(lat, longt);
                     L.marker(coordinations).addTo(layerGroup);
                 }
