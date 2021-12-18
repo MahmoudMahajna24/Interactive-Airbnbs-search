@@ -22,7 +22,7 @@ body {
     margin: 0;
     box-sizing: border-box;
     padding: 0;
-    color: #FFFFFF;
+    color: var(--text);
 }
 
 #navbar {
