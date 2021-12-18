@@ -11,10 +11,17 @@
 <body>
     <input type="file" class="auxbutton" id="uploadcsv" onchange="changeHeaderText()" accept=".csv">
     <script src="./PapaParse-5.0.2/papaparse.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
 
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-    <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator_midnight.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+
+    <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator_site.min.css" rel="stylesheet">
+
+
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
 
     <!-- Navbar Section -->
@@ -23,8 +30,18 @@
             <p id="hw3"><a onclick="reset()" href="#">HW3</a></p>
             <nav>
                 <ul id="navbar_items">
-                    <li><a id="download" class="download_button" onclick="downloadcsv()" href="#" hidden>Download csv file</a></li>
+                    <li><a id="download" class="download_button" onclick="downloadcsv()" href="#" hidden>Download csv
+                            file</a></li>
                     <li><a id="reset" class="reset_button" onclick="reset()" href="#" hidden> Reset</a></li>
+                    <li>
+                        <div class="theme-switch-wrapper">
+                            <label class="theme-switch" for="checkbox">
+                                <input type="checkbox" id="checkbox" checked />
+                                <div class="slider round"></div>
+                            </label>
+                            <p id="mode">Dark Mode</p>
+                        </div>
+                    </li>
                 </ul>
             </nav>
 
@@ -41,7 +58,8 @@
         <div class="upload_container">
             <div class="upload-area">
                 <div>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Noun_Project_cloud_upload_icon_411593_cc.svg/1130px-Noun_Project_cloud_upload_icon_411593_cc.svg.png" />
+                    <img
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Noun_Project_cloud_upload_icon_411593_cc.svg/1130px-Noun_Project_cloud_upload_icon_411593_cc.svg.png" />
                 </div>
                 <header>Upload CSV file</header>
                 <button onclick="uploadcsv()" href="#">Browse File</button>
@@ -51,7 +69,8 @@
         <div class="read_container">
             <div class="read-area">
                 <div>
-                    <img src="https://cdn0.iconfinder.com/data/icons/files-documents-outline/512/oYPS__file_document_enlarge_magnifier_magnify_examine_read_paper_page_text-512.png" />
+                    <img
+                        src="https://cdn0.iconfinder.com/data/icons/files-documents-outline/512/oYPS__file_document_enlarge_magnifier_magnify_examine_read_paper_page_text-512.png" />
                 </div>
                 <header>Read CSV file</header>
                 <button id="read_button" onclick="readcsv()" href="#">Read File</button>
@@ -99,22 +118,57 @@
     nyMap = L.map('map').setView(L.latLng(40.754932, -73.984016), 11);
     layerGroup = L.layerGroup().addTo(nyMap);
 
-    var setupMap = function() {
+
+    var setupMap = function () {
         L.tileLayer(
             'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibW1haG1vdWQyNCIsImEiOiJja3gwbDBtODMwM3dsMndwaGZ0cHk1NDZnIn0.zqugofdRSRjvP9K319h_NA', {
-                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-                maxZoom: 18,
-                id: 'mapbox/streets-v11',
-                tileSize: 512,
-                zoomOffset: -1,
-                accessToken: 'your.mapbox.access.token'
-            }).addTo(nyMap);
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox/streets-v11',
+            tileSize: 512,
+            zoomOffset: -1,
+            accessToken: 'your.mapbox.access.token'
+        }).addTo(nyMap);
     };
     setupMap();
 
     var read_button = document.getElementById("read_button");
     read_button.disabled = true;
     read_button.style.cursor = "not-allowed";
+
+    const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+
+    function switchTheme(e) {
+        var sheet = document.styleSheets[0];
+
+        if (e.target.checked) {
+            document.getElementById("mode").innerHTML = "Dark Mode";
+            document.documentElement.style.setProperty('--background', '#121212');
+            document.documentElement.style.setProperty('--navbar', '#292929');
+            document.documentElement.style.setProperty('--text', '#ffffff');
+            document.documentElement.style.setProperty('--upload', '#B67D02');
+            document.documentElement.style.setProperty('--read', '#30939C');
+            document.documentElement.style.setProperty('--reset', '#C80000');
+            document.documentElement.style.setProperty('--download', '#000096');
+            iterator = document.getElementById("info");
+            iterator.style.backgroundColor = '#606060';
+
+        }
+        else {
+            document.getElementById("mode").innerHTML = "Light Mode";
+            document.documentElement.style.setProperty('--background', '#F2F2F2');
+            document.documentElement.style.setProperty('--navbar', 'white');
+            document.documentElement.style.setProperty('--text', '#000000');
+            document.documentElement.style.setProperty('--upload', '#B67D02');
+            document.documentElement.style.setProperty('--read', '#30939C');
+            document.documentElement.style.setProperty('--reset', '#C80000');
+            document.documentElement.style.setProperty('--download', '#000096');
+            iterator = document.getElementById("info");
+            iterator.style.backgroundColor = '#c1c1c1';
+        }
+    }
+
+    toggleSwitch.addEventListener('change', switchTheme, false);
 
     function uploadcsv() {
         var iterator;
@@ -135,7 +189,7 @@
                 header: true,
                 dynamicTyping: true,
                 skipEmptyLines: 'greedy',
-                complete: function(result) {
+                complete: function (result) {
                     console.log(document.getElementById('uploadcsv').files[0]);
                     dataArray = result.data;
 
@@ -180,7 +234,7 @@
                         ],
                     });
 
-                    table.on("rowSelected", function(row) {
+                    table.on("rowSelected", function (row) {
                         //todo: tidy up additional info
                         let rowData = row["_row"]["data"];
                         let latitude = rowData["latitude"];
@@ -196,12 +250,12 @@
                         iterator.style.gridTemplateColumns = "auto";
                     });
 
-                    table.on("rowDeselected", function(row) {
+                    table.on("rowDeselected", function (row) {
                         //nyMap.flyTo(L.latLng(40.754932, -73.984016), 11);
                         document.getElementById("info").style.display = "none";
                     });
 
-                    nyMap.on("dragstart", function(x) {
+                    nyMap.on("dragstart", function (x) {
                         table.deselectRow();
                         document.getElementById("info").style.display = "none";
                     });
@@ -217,7 +271,7 @@
     }
 
     function UpdateAdditionalInfo(rowdata) {
-        var update = function(id, receivedData) {
+        var update = function (id, receivedData) {
             let value = receivedData[id];
             var currentValue = document.getElementById(id).innerHTML;
             if (currentValue.substring(0, 3) != "<b>") {
