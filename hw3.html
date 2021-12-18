@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <input type="file" class="auxbutton" id="uploadcsv" accept=".csv">
+    <input type="file" class="auxbutton" id="uploadcsv" onchange="changeHeaderText()" accept=".csv">
     <script src="./PapaParse-5.0.2/papaparse.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
 
@@ -122,7 +122,7 @@
         document.getElementById("hw3").innerHTML = "<b>HW3</b>";
 
         document.getElementById('uploadcsv').click();
-
+        iterator = document.getElementById('uploadcsv');
         console.log(document.getElementById('uploadcsv'));
         console.log(document.getElementById('uploadcsv').files[0]);
         var read_button = document.getElementById("read_button");
@@ -136,6 +136,7 @@
                 dynamicTyping: true,
                 skipEmptyLines: 'greedy',
                 complete: function(result) {
+                    console.log(document.getElementById('uploadcsv').files[0]);
                     dataArray = result.data;
 
                     table = new Tabulator("#airbnbtable", {
@@ -318,5 +319,10 @@
                 }
             }
         }
+    }
+
+    function changeHeaderText() {
+        document.getElementById("dbheader").innerHTML = "Database is Ready, Please Read it";
+
     }
 </script>
