@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
-
 * {
     margin: 0;
     padding: 0;
@@ -8,7 +7,7 @@
 }
 
 body {
-    background: #F2F2F2;
+    background: #E0E0E0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     box-sizing: border-box;
@@ -16,7 +15,7 @@ body {
 }
 
 #navbar {
-    background: white;
+    background: #EBEBEB;
     font-size: 1.2rem;
     padding: 0.5em;
     height: 5vh;
@@ -110,7 +109,19 @@ li {
 
 .button_border {
     margin: 5px;
-    border: 1px solid rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+.reset_button {
+    margin: 5px;
+    border: 1px solid #FF0000;
+    border-radius: 4px;
+}
+
+.download_button {
+    margin: 5px;
+    border: 1px solid #000080;
     border-radius: 4px;
 }
 
@@ -121,7 +132,6 @@ li {
     overflow: auto;
     padding: 10px;
     border-radius: 5px;
-    border: 1px solid rgba(0, 0, 0, 0.3);
     display: flex;
 }
 
@@ -133,13 +143,10 @@ li {
     overflow: auto;
     padding: 10px;
     border-radius: 5px;
-    border: 1px solid rgba(0, 0, 0, 0.3);
-
     display: flex;
     align-items: center;
     justify-content: center;
     background: #fdb314;
-
 }
 
 .read_container {
@@ -150,12 +157,10 @@ li {
     overflow: auto;
     padding: 10px;
     border-radius: 5px;
-    border: 1px solid rgba(0, 0, 0, 0.3);
     display: flex;
     align-items: center;
     justify-content: center;
     background: #66c7d0;
-
 }
 
 .upload-area {
