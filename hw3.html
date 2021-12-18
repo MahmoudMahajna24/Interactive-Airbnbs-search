@@ -11,13 +11,9 @@
 <body>
     <input type="file" class="auxbutton" id="uploadcsv" accept=".csv">
     <script src="./PapaParse-5.0.2/papaparse.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-        crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
 
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-        crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
     <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
 
@@ -27,8 +23,8 @@
             <p id="hw3"><a onclick="reset()" href="#">HW3</a></p>
             <nav>
                 <ul id="navbar_items">
-                    <li><a id="upload" class="button_border" onclick="uploadcsv()" href="#">Upload csv file</a></li>
-                    <li><a id="read" class="button_border" onclick="readcsv()" href="#" hidden>Read csv file</a></li>
+                    <!-- <li><a id="upload" class="button_border" onclick="uploadcsv()" href="#">Upload csv file</a></li> -->
+                    <!-- <li><a id="read" class="button_border" onclick="readcsv()" href="#" hidden>Read csv file</a></li> -->
                     <li><a id="download" class="button_border" onclick="downloadcsv()" href="#" hidden>Download csv
                             file</a></li>
                     <li><a id="reset" class="button_border" onclick="reset()" href="#" hidden> Reset</a></li>
@@ -48,8 +44,7 @@
         <div class="upload_container">
             <div class="upload-area">
                 <div>
-                    <img
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Noun_Project_cloud_upload_icon_411593_cc.svg/1130px-Noun_Project_cloud_upload_icon_411593_cc.svg.png" />
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Noun_Project_cloud_upload_icon_411593_cc.svg/1130px-Noun_Project_cloud_upload_icon_411593_cc.svg.png" />
                 </div>
                 <header>Upload CSV file</header>
                 <button onclick="uploadcsv()" href="#">Browse File</button>
@@ -59,8 +54,7 @@
         <div class="read_container">
             <div class="read-area">
                 <div>
-                    <img
-                        src="https://cdn0.iconfinder.com/data/icons/files-documents-outline/512/oYPS__file_document_enlarge_magnifier_magnify_examine_read_paper_page_text-512.png" />
+                    <img src="https://cdn0.iconfinder.com/data/icons/files-documents-outline/512/oYPS__file_document_enlarge_magnifier_magnify_examine_read_paper_page_text-512.png" />
                 </div>
                 <header>Read CSV file</header>
                 <button id="read_button" onclick="readcsv()" href="#">Read File</button>
@@ -112,7 +106,7 @@
     nyMap = L.map('map').setView(L.latLng(40.754932, -73.984016), 11);
     layerGroup = L.layerGroup().addTo(nyMap);
 
-    var setupMap = function () {
+    var setupMap = function() {
         L.tileLayer(
             'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibW1haG1vdWQyNCIsImEiOiJja3gwbDBtODMwM3dsMndwaGZ0cHk1NDZnIn0.zqugofdRSRjvP9K319h_NA', {
                 attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -130,14 +124,14 @@
     read_button.style.cursor = "not-allowed";
 
     function uploadcsv() {
+        var iterator;
+
         document.getElementById("hw3").innerHTML = "<b>HW3</b>";
 
         document.getElementById('uploadcsv').click();
-        var iterator;
 
-        document.getElementById("upload").style.display = "inline";
-        iterator = document.getElementById("read");
-        iterator.style.display = "inline";
+        console.log(document.getElementById('uploadcsv'));
+        console.log(document.getElementById('uploadcsv').files[0]);
         var read_button = document.getElementById("read_button");
         read_button.disabled = false;
         read_button.style.cursor = "pointer";
@@ -148,7 +142,7 @@
                 header: true,
                 dynamicTyping: true,
                 skipEmptyLines: 'greedy',
-                complete: function (result) {
+                complete: function(result) {
                     dataArray = result.data;
 
                     table = new Tabulator("#airbnbtable", {
@@ -192,7 +186,7 @@
                         ],
                     });
 
-                    table.on("rowSelected", function (row) {
+                    table.on("rowSelected", function(row) {
                         //todo: tidy up additional info
                         let rowData = row["_row"]["data"];
                         let latitude = rowData["latitude"];
@@ -208,13 +202,13 @@
                         iterator.style.gridTemplateColumns = "auto";
                     });
 
-                    table.on("rowDeselected", function (row) {
+                    table.on("rowDeselected", function(row) {
                         //nyMap.flyTo(L.latLng(40.754932, -73.984016), 11);
                         iterator = document.getElementById("info");
                         iterator.style.display = "none";
                     });
 
-                    nyMap.on("dragstart", function (x) {
+                    nyMap.on("dragstart", function(x) {
                         table.deselectRow();
                         iterator = document.getElementById("info");
                         iterator.style.display = "none";
@@ -233,7 +227,7 @@
     }
 
     function UpdateAdditionalInfo(rowdata) {
-        var update = function (id, receivedData) {
+        var update = function(id, receivedData) {
             let value = receivedData[id];
             var currentValue = document.getElementById(id).innerHTML;
             if (currentValue.substring(0, 3) != "<b>") {
@@ -280,14 +274,10 @@
         document.getElementById("button_container").style.display = "none";
 
         var iterator;
-        iterator = document.getElementById("upload");
-        iterator.style.display = "none";
 
-        iterator = document.getElementById("read");
-        iterator.style.display = "none";
-        var read_button = document.getElementById("read_button");
-        read_button.disabled = true;
-        read_button.style.cursor = "not-allowed";
+        iterator = document.getElementById("read_button");
+        iterator.disabled = true;
+        iterator.style.cursor = "not-allowed";
 
         iterator = document.getElementById("reset");
         iterator.style.display = "inline";
@@ -310,29 +300,24 @@
         var iterator;
         document.getElementById("button_container").style.display = "flex";
 
-        iterator = document.getElementById("upload");
-        iterator.style.display = "inline";
-
-        iterator = document.getElementById("read");
-        iterator.style.display = "none";
         var read_button = document.getElementById("read_button");
         read_button.disabled = true;
         read_button.style.cursor = "not-allowed";
 
-        iterator = document.getElementById("reset");
-        iterator.style.display = "none";
+        iterator = document.getElementById("reset").style.display = "none";
+        // iterator.style.display = "none";
 
-        iterator = document.getElementById("info");
-        iterator.style.display = "none";
+        iterator = document.getElementById("info").style.display = "none";
+        //iterator.style.display = "none";
 
-        iterator = document.getElementById("download");
-        iterator.style.display = "none";
+        iterator = document.getElementById("download").style.display = "none";
+        //iterator.style.display = "none";
 
-        iterator = document.getElementById("map");
-        iterator.style.visibility = "hidden";
+        iterator = document.getElementById("map").style.visibility = "hidden";
+        //iterator.style.visibility = "hidden";
 
-        iterator = document.getElementById("airbnbtable");
-        iterator.style.visibility = "hidden";
+        iterator = document.getElementById("airbnbtable").style.visibility = "hidden";;
+        //iterator.style.visibility = "hidden";
 
         document.getElementById("hw3").innerHTML = "<b>HW3</b>";
         document.getElementById("dbheader").innerHTML = "Database is Missing, Please upload it";
